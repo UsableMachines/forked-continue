@@ -72,6 +72,7 @@ describe.skip("CodebaseIndexer", () => {
   const lancedbIndex = new LanceDbIndex(
     new TransformersJsEmbeddingsProvider(),
     ide.readFile.bind(ide),
+    path.sep,
     continueServerClient,
   );
 
