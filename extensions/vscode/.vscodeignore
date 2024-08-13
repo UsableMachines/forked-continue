@@ -16,7 +16,6 @@ node_modules/**
 **/.pytest_cache
 **/__pycache__
 
-manual-testing-sandbox
 esbuild.js
 esbuild.test.mjs
 importMetaUrl.js

@@ -17,7 +17,7 @@ export function run() {
   });
 
   // See esbuild.test.mjs for more details
-  // Assumes this file is in out/test/runner/mochaRunner.js
+  // Assumes this file is in out/mochaRunner.js
   const compiledTestSuitesDirectory = path.resolve(__dirname);
 
   glob

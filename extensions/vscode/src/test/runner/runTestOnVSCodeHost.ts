@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { runTests } from "@vscode/test-electron";
 import { defaultConfig } from "core/config/default";
 import fs from "node:fs";
 import * as path from "node:path";
+import os from "node:os";
 
 export const testWorkspacePath = path.resolve(
   __dirname,
@@ -22,39 +24,29 @@ const continueGlobalDir = path.resolve(
 );
 
 function setupTestWorkspace() {
-  if (fs.existsSync(testWorkspacePath)) {
-    fs.rmSync(testWorkspacePath, { recursive: true });
-  }
-  fs.mkdirSync(testWorkspacePath, {
-    recursive: true,
-  });
+  const manualTestingSandboxPath = path.resolve(
+    __dirname,
+    "..",
+    "..",
+    "..",
+    "manual-testing-sandbox",
+  );
 
-  fs.writeFileSync(
-    path.join(testWorkspacePath, "test.py"),
-    "print('Hello World!')",
-  );
-  fs.writeFileSync(
-    path.join(testWorkspacePath, "index.js"),
-    "console.log('Hello World!')",
-  );
-  fs.writeFileSync(
-    path.join(testWorkspacePath, "test.py"),
-    "print('Hello World!')",
-  );
-  fs.mkdirSync(path.join(testWorkspacePath, "test-folder"));
-  fs.writeFileSync(
-    path.join(testWorkspacePath, "test-folder", "test.js"),
-    "console.log('Hello World!')",
-  );
+  cleanupTestWorkspace();
+
+  fs.mkdirSync(testWorkspacePath, { recursive: true });
+
+  fs.cpSync(manualTestingSandboxPath, testWorkspacePath, { recursive: true });
 }
-
 function setupContinueGlobalDir() {
   if (fs.existsSync(continueGlobalDir)) {
     fs.rmSync(continueGlobalDir, { recursive: true });
   }
+
   fs.mkdirSync(continueGlobalDir, {
     recursive: true,
   });
+
   fs.writeFileSync(
     path.join(continueGlobalDir, "config.json"),
     JSON.stringify({
@@ -85,15 +77,8 @@ function cleanupContinueGlobalDir() {
 
 async function main() {
   try {
-    // The folder containing the Extension Manifest package.json
-    // Passed to `--extensionDevelopmentPath`
-
-    // Assumes this file is in out/runTestOnVSCodeHost.js
     const extensionDevelopmentPath = path.resolve(__dirname, "../");
-    console.log("extensionDevelopmentPath", extensionDevelopmentPath);
 
-    // The path to test runner
-    // Passed to --extensionTestsPath
     const extensionTestsPath = path.resolve(
       extensionDevelopmentPath,
       "out/mochaRunner",
@@ -107,12 +92,15 @@ async function main() {
     setupTestWorkspace();
     setupContinueGlobalDir();
 
-    // Download VS Code, unzip it and run the integration test
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
       extensionTestsEnv,
-      launchArgs: [testWorkspacePath],
+      launchArgs: [
+        testWorkspacePath,
+        "--user-data-dir", // https://stackoverflow.com/questions/71664226/cannot-run-vscode-extension-starter-project-tests-twice-in-a-row-on-macos
+        `${os.tmpdir()}`,
+      ],
     });
   } catch (err) {
     console.error("Failed to run tests", err);

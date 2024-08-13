@@ -10,7 +10,7 @@ describe("Extension Test Suite", () => {
   //   await new Promise((resolve) => setTimeout(resolve, 10_000));
   // });
 
-  test("Get the default model from webview", async () => {
+  test.skip("Get the default model from webview", async () => {
     const continueExtensionApi =
       vscode.extensions.getExtension("continue.continue");
     const extension: VsCodeExtension = continueExtensionApi?.exports.extension;

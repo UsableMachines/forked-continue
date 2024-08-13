@@ -15,3 +15,4 @@ gui/*
 
 .devcontainer
 .github
+src/test/fixtures/test-workspace/

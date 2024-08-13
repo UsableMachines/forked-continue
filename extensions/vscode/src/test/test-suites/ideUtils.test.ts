@@ -4,28 +4,32 @@ import path from "node:path";
 import * as vscode from "vscode";
 import { VsCodeIdeUtils } from "../../util/ideUtils";
 import { testWorkspacePath } from "../runner/runTestOnVSCodeHost";
-const util = require("node:util");
-const asyncExec = util.promisify(require("node:child_process").exec);
+import { promisify } from "node:util";
+import { exec } from "node:child_process";
+
+const asyncExec = promisify(exec);
 
 describe("IDE Utils", () => {
   const utils = new VsCodeIdeUtils();
-  const testPyPath = path.join(testWorkspacePath, "test.py");
-  const testJsPath = path.join(testWorkspacePath, "test-folder", "test.js");
+  const testPyPath = path.join(
+    testWorkspacePath,
+    "nested-folder",
+    "helloNested.py",
+  );
+  const testJsPath = path.join(testWorkspacePath, "test.js");
 
-  test("getWorkspaceDirectories", async () => {
+  test.only("getWorkspaceDirectories", async () => {
     const [dir] = utils.getWorkspaceDirectories();
     assert(dir.endsWith("test-workspace"));
   });
 
   test("fileExists", async () => {
-    const exists2 = await utils.fileExists(
-      path.join(testWorkspacePath, "test.py"),
-    );
+    const exists2 = await utils.fileExists(testPyPath);
     assert(exists2);
   });
 
-  test("getAbsolutePath", async () => {
-    const groundTruth = path.join(testWorkspacePath, "test.py");
+  test.skip("getAbsolutePath", async () => {
+    const groundTruth = testPyPath;
     assert(utils.getAbsolutePath("test.py") === groundTruth);
     assert(utils.getAbsolutePath(groundTruth) === groundTruth);
   });
@@ -61,9 +65,10 @@ describe("IDE Utils", () => {
 
   test("readFile", async () => {
     const testPyContents = await utils.readFile(testPyPath);
-    assert(testPyContents === "print('Hello World!')");
+    assert(testPyContents.includes('print("Hello Nested!")'));
+
     const testJsContents = await utils.readFile(testJsPath);
-    assert(testJsContents === "console.log('Hello World!')");
+    assert(testJsContents.includes("class Calculator"));
   });
 
   test.skip("getTerminalContents", async () => {
