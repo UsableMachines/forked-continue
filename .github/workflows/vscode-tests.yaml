@@ -33,14 +33,14 @@ jobs:
           #   platform: alpine
           #   arch: x64
           #   npm_config_arch: x64
-          # - os: macos-12 # should migrate this to the newer x64 version of macos-14
-          #   platform: darwin
-          #   arch: x64
-          #   npm_config_arch: x64
-          - os: macos-12 # same here, especially
+          - os: macos-12 # should migrate this to the newer x64 version of macos-14
             platform: darwin
-            arch: arm64
-            npm_config_arch: arm64
+            arch: x64
+            npm_config_arch: x64
+          # - os: macos-12 # same here, especially
+          #   platform: darwin
+          #   arch: arm64
+          #   npm_config_arch: arm64
     runs-on: ${{ matrix.os }}
     steps:
       # 1. Check-out repository

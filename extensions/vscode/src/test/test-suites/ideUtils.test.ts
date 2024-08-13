@@ -18,7 +18,7 @@ describe("IDE Utils", () => {
   );
   const testJsPath = path.join(testWorkspacePath, "test.js");
 
-  test.only("getWorkspaceDirectories", async () => {
+  test("getWorkspaceDirectories", async () => {
     const [dir] = utils.getWorkspaceDirectories();
     assert(dir.endsWith("test-workspace"));
   });
@@ -34,7 +34,7 @@ describe("IDE Utils", () => {
     assert(utils.getAbsolutePath(groundTruth) === groundTruth);
   });
 
-  test("getOpenFiles", async () => {
+  test.only("getOpenFiles", async () => {
     let openFiles = utils.getOpenFiles();
     assert(openFiles.length === 0);
     // await utils.openFile(testPyPath);
