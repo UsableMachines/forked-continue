@@ -29,6 +29,9 @@ jobs:
           #   platform: linux
           #   arch: armhf
           #   npm_config_arch: arm
+
+          ## This is the only OS that has been tested for
+          ## this worfklow
           - os: ubuntu-latest
             platform: alpine
             arch: x64
@@ -119,17 +122,3 @@ jobs:
         with:
           run: npm test
           working-directory: ./extensions/vscode
-      # - name: Install Xvfb for Linux and run tests
-      #   run: |
-      #     sudo apt-get install -y xvfb # Install Xvfb
-      #     Xvfb :99 & # Start Xvfb
-      #     export DISPLAY=:99 # Export the display number to the environment
-      #     cd extensions/vscode
-      #     npm run test
-      #   if: matrix.os == 'ubuntu-latest'
-
-      # - name: Run extension tests
-      #   run: |
-      #     cd extensions/vscode
-      #     npm run test
-      #   if: matrix.os != 'ubuntu-latest'

@@ -16,11 +16,11 @@ import {
   openEditorAndRevealRange,
   uriFromFilePath,
 } from "./vscode";
-
 import _ from "lodash";
+import { promisify } from "node:util";
+import { exec } from "node:child_process";
 
-const util = require("node:util");
-const asyncExec = util.promisify(require("node:child_process").exec);
+const asyncExec = promisify(exec);
 
 export class VsCodeIdeUtils {
   visibleMessages: Set<string> = new Set();

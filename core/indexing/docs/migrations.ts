@@ -29,6 +29,19 @@ export async function runSqliteMigrations(db: Database) {
       "sqlite_modify_docs_columns_and_copy_to_config",
       async () => {
         try {
+          const tableExists = await db.get(
+            `
+            SELECT name 
+            FROM sqlite_master 
+            WHERE type='table' AND name=?
+            `,
+            [DocsService.sqlitebTableName],
+          );
+
+          if (!tableExists) {
+            return;
+          }
+
           const pragma = await db.all(
             `PRAGMA table_info(${DocsService.sqlitebTableName})`,
           );

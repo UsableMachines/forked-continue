@@ -33,6 +33,8 @@ import { VsCodeMessenger } from "./VsCodeMessenger";
 
 export class VsCodeExtension {
   // Currently some of these are public so they can be used in testing (test/test-suites)
+  webviewProtocolPromise: Promise<VsCodeWebviewProtocol>;
+  core: Core;
 
   private configHandler: ConfigHandler;
   private extensionContext: vscode.ExtensionContext;
@@ -42,8 +44,6 @@ export class VsCodeExtension {
   private windowId: string;
   private diffManager: DiffManager;
   private verticalDiffManager: VerticalPerLineDiffManager;
-  webviewProtocolPromise: Promise<VsCodeWebviewProtocol>;
-  private core: Core;
   private battery: Battery;
   private workOsAuthProvider: WorkOsAuthProvider;
 
