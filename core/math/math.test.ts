@@ -1,6 +1,6 @@
-import { add, substract } from "./add";
+import { add, substract } from "./math";
 
-describe("add function", () => {
+describe("math.ts", () => {
   it("should add two positive numbers correctly", () => {
     // 1.
     // Start typing below and autocomplete should suggest a valid test,
